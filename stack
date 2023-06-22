@@ -1,0 +1,53 @@
+#include <stdio.h>
+#define size 5
+int top=-1;
+int arr[size];
+void push(int val)
+{
+    if(top==size-1)
+    printf("The stack is overflow ");
+    else
+    {
+        arr[++top]=val;
+    }
+}
+void pop()
+{
+    if(top==-1)
+    printf("The stack is underflow ");
+    else
+    {
+        printf("%d ",arr[top--]);
+    }
+}
+void display()
+{
+    if(top==-1)
+    printf("The stack is underflow");
+    else
+    {
+        for(int i=0;i<=top;i++)
+        {
+            printf("%d ",arr[i]);
+        }
+    }
+    
+}
+void peek()
+{
+    if(top==-1)
+    printf("The stack is underflow");
+    else
+    {
+        printf("%d",arr[top]);
+    }
+}
+int main()
+{
+    push(4);
+    push(5);
+    pop();
+    display();
+    peek();
+    return 0;
+}
