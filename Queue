@@ -83,6 +83,7 @@ int main()
     dequeue();
     printf("\n");
     enqueue(4);
+    enqueue(5);
     display();
     return 0; 
 }
