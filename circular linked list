@@ -1,0 +1,229 @@
+#include<stdio.h>
+#include<limits.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node * next;
+};
+typedef struct node NODE;
+NODE * last=NULL;
+void insertatbegin(int val)
+{
+    NODE* newnode=(NODE*)malloc(sizeof(NODE));
+    newnode->data=val;
+    newnode->next=NULL;
+    if(last==NULL)
+       {
+        last=newnode;
+        newnode->next=newnode;
+       }
+    else
+    {
+        newnode->next=last->next;
+        last->next=newnode;
+    }
+}
+void insertatend(int val)
+{
+    NODE* tptr;
+    NODE* newnode=(NODE*)malloc(sizeof(NODE));
+    newnode->data=val;
+    newnode->next=NULL;
+     if(last==NULL)
+      {
+            last=newnode;
+            last->next=newnode;
+      }
+     else
+        {
+           newnode->next=last->next;
+           last->next=newnode;
+           last=newnode;
+
+        }
+}
+void insertatsort(int val)                    // not edited
+{
+    NODE* tptr,*prev;
+    NODE* newnode=(NODE*)malloc(sizeof(NODE));
+    newnode->data=val;
+    newnode->next=NULL;
+    if(last==NULL)
+    {
+        last=newnode;
+    }
+    for(prev=NULL,tptr=last;tptr!=NULL;prev=tptr,tptr=tptr->next)
+    {
+        if(tptr->data > newnode->data)
+            break;
+    }
+    if(tptr==last)
+    {
+        newnode->next=last;
+        last=newnode;
+    }
+    else
+    {
+        prev->next=newnode;
+        newnode->next=tptr;
+    }
+}
+void reverse()                                         // not edited
+
+{
+    NODE *prev=NULL,*cur=last,*fut=last->next;
+    while(cur!=NULL)
+    {
+        fut=cur->next;
+        cur->next=prev;
+        prev=cur;
+        cur=fut;
+    }
+    last=prev;
+}
+void display()
+{
+   NODE* tptr;
+   if(last==NULL)
+   {
+       printf("The linked list in empty\n");
+   }
+   else
+   {
+       printf("The values are:");tptr=last->next;
+       do
+       {
+        printf("%d ",tptr->data);
+        tptr=tptr->next;
+       }while(tptr!=last->next);
+    }
+     printf("\n");
+}
+void search(int val)
+{
+    NODE * tptr;tptr=last->next;
+     do
+       {
+        if(tptr->data==val)
+        {
+           printf("The element is found\n");
+           return;
+        }
+        tptr=tptr->next;
+       }while(tptr!=last->next);
+    if(tptr==last->next)
+        printf("The value is not found\n");
+}
+void delete(int val)
+{
+  NODE* tptr,*prev;prev=NULL;
+  if(last==NULL)
+  {
+      printf("List is empty");
+      return;
+  }
+  tptr=last->next;
+       do
+       {
+          if(tptr->data==val)
+        {
+           break;
+        }
+        prev=tptr;
+        tptr=tptr->next;
+       }while(tptr!=last->next);
+  if(tptr==last)
+  {
+    prev->next=last->next;
+    last=prev;
+    free(tptr);
+  }
+  else if(tptr==last->next)
+  {
+       last->next=last->next->next;
+       free(tptr);
+  }
+  else
+  {
+      prev->next=tptr->next;
+      free(tptr);
+  }
+}
+int main()
+{
+    int choice,val;
+    while(1)
+    {
+        printf("-------------------------------\n");
+        printf("1.Insert value at beginning \n");
+        printf("2.Insert value at end \n");
+        printf("3.Insert value at sorted list\n");
+        printf("4.Display\n");
+        printf("5.Search the element\n");
+        printf("6 To delete the element\n");
+        printf("7.To reverse the list\n");
+        printf("8.Exit\n");
+        printf("-------------------------------\n");
+        printf("Enter the choice:");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+                {
+                    printf("Enter the value to insert:");
+                    scanf("%d",&val);
+                    insertatbegin(val);
+                    break;
+                }
+            case 2:
+                {
+                    printf("Enter the value to insert:");
+                    scanf("%d",&val);
+                    insertatend(val);
+                    break;
+                }
+            case 3:
+                {
+                    printf("Enter the value to insert:");
+                    scanf("%d",&val);
+                    insertatsort(val);
+                    break;
+                }
+            case 4:
+                {
+                    display();
+                    break;
+                }
+            case 5:
+                {
+                    printf("Enter the value for search:");
+                    scanf("%d",&val);
+                    search(val);
+                    break;
+                }
+            case 6:
+                {
+                    printf("Enter the value to delete:");
+                    scanf("%d",&val);
+                    if(last==NULL)
+                        printf("The list is empty ");
+                    else
+                    {
+                        delete(val);
+                        display();
+                    }
+                    break;
+                }
+            case 7:
+                {
+                    reverse();
+                    display();
+                    break;
+                }
+            case 8:
+                exit(0);break;
+            default: printf("Enter the valid choice:");
+        }
+    }
+}
