@@ -1,0 +1,230 @@
+#include<stdio.h>
+struct node
+{
+    int data;
+    struct node *left;
+    struct node *right;
+};
+typedef struct node NODE;
+NODE * root = NULL;
+NODE * createnode(int val)
+{
+    NODE *newnode=(NODE*)malloc(sizeof(NODE));
+    newnode->data=val;
+    newnode->left=NULL;
+    newnode->right=NULL;
+    return newnode;
+}
+void insert(int val)
+{
+    NODE* newnode;
+    NODE* prev,*tptr;
+    newnode=createnode(val);
+    if(root==NULL)
+        root=newnode;
+    else
+    {
+         tptr=root;
+         prev=NULL;
+         while(tptr!=NULL)
+         {
+             prev=tptr;
+             if(tptr->data > newnode->data)
+                tptr=tptr->left;
+             else
+                tptr=tptr->right;
+         }
+         if(prev->data > newnode->data)
+            prev->left=newnode;
+         else
+            prev->right=newnode;
+    }
+}
+void search(int val)
+{
+    NODE* tptr=root;
+    while(tptr!=NULL)
+    {
+        if(tptr->data >= val)
+        {
+            if(tptr->data==val)
+            {
+                printf("The element %d is founded\n",val);
+                return;
+            }
+            else
+                tptr=tptr->left;
+        }
+        else
+        {
+            if(tptr->data==val)
+            {
+                printf("The element %d is founded\n",val);
+                return;
+            }
+            else
+                tptr=tptr->right;
+        }
+    }
+    if(tptr==NULL)
+        printf("The element %d is not founded\n",val);
+}
+void preorder(NODE* root)
+{
+    if(root==NULL)
+        return;
+    printf("%d ",root->data);
+    preorder(root->left);
+    preorder(root->right);
+}
+void inorder(NODE* root)
+{
+    if(root==NULL)
+        return;
+    inorder(root->left);
+    printf("%d ",root->data);
+    inorder(root->right);
+}
+void postorder(NODE* root)
+{
+    if(root==NULL)
+        return;
+    postorder(root->left);
+    postorder(root->right);
+    printf("%d ",root->data);
+}
+NODE* delete(NODE* root,int val)
+{
+    if(root==NULL)
+        return root;
+    if(val > root->data)
+        root->right=delete(root->right,val);
+    else if(val < root->data)
+        root->left=delete(root->left,val);
+    else
+    {
+        if(root->left==NULL)
+          return root->right;
+        else if(root->right==NULL)
+            return root->left;
+        else
+            {
+                root->data=min(root->right);
+                root->right=delete(root->right,root->data);
+            }
+    }
+}
+int min(NODE* root)
+{
+    int min_num=root->data;
+    while(root->left!=NULL)
+    {
+        min_num=root->left->data;
+        root=root->left;
+    }
+    return min_num;
+}
+/*
+void insert(int val)
+int main()
+{
+     NODE* newnode;
+    NODE* prev,*tptr;
+    newnode=createnode(val);
+    if(root==NULL)
+        root=newnode;
+    else
+    {
+        tptr=root;
+        while(1)
+        {
+            if(tptr->data > newnode->data)
+            {
+                if(tptr->left== NULL)
+                {
+                    tptr->left=newnode;
+                    break;
+                }
+                else
+                    tptr=tptr->left;
+            }
+            else
+            {
+                if(tptr->right == NULL)
+                {
+                    tptr->right=newnode;
+                    break;
+                }
+                else
+                    tptr=tptr->right;
+            }
+        }
+}  */
+int main()
+{
+    int choice,data;
+    while(1)
+    {
+        printf("-----------------------------\n");
+        printf("1. INSERTION OF THE ELEMENT\n");
+        printf("2. DELECTION OF THE ELEMENT\n");
+        printf("3. SEARCHING OF THE ELEMENT\n");
+        printf("4. PREORDER TRAVERSAL\n");
+        printf("5. INORDER TRAVERSAL\n");
+        printf("6. POSTORDER TRAVERSAL\n");
+        printf("7. EXIT\n");
+        printf("-----------------------------\n");
+        printf("ENTER THE CHOICE:");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+        case 1:
+            {
+                printf("Enter the value to insert:");
+                scanf("%d",&data);
+                insert(data);break;
+            }
+        case 2:
+            {
+                 printf("Enter the value to delete:");
+                 scanf("%d",&data);
+                 delete(root,data);
+                 break;
+            }
+        case 3:
+            {
+             printf("Enter the value to search:");
+             scanf("%d",&data);
+             search(data);
+             break;
+            }
+        case 4:
+            {
+             printf("PREORDER-The elements are:\n");
+             preorder(root);
+             printf("\n");
+             break;
+            }
+        case 5:
+            {
+             printf("INORDER-The elements are:\n");
+             inorder(root);
+             printf("\n");
+             break;
+            }
+        case 6:
+            {
+             printf("\nPOSTORDER-The elements are:\n");
+            postorder(root);
+             printf("\n");
+             break;
+            }
+        case 7:
+            {
+                exit(0);
+                break;
+            }
+        default: printf("Enter the valid choice:\n");
+        }
+    }
+}
